@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package logic;
+
+option go_package = "./logic";
+
+message GateTologicMsg {
+  enum serializeType{
+    None = 0;
+    Json = 1;
+    Protobuf = 2;
+  }
+  int64 from = 1;  // 连接id
+  int64 serverId = 2;  // gate服务id
+  serializeType serialize = 3;
+  bytes data = 4;  // rawData
+}
+
+message empty{}
+
+
+service Logic {
+  rpc GateToLogic(GateTologicMsg) returns (empty);  // Oneshot 不用等服务返回值
+}

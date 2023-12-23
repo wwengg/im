@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package pbgate;
+
+option go_package = "./pbgate";
+
+enum cmd {
+  SerializeNone = 0;
+  JSON = 1;
+  ProtoBuffer = 2;
+//  MsgPack = 3;
+}
+
+
+message SendMsgData {
+  enum toType{
+    To_None = 0;
+    To_Conn = 1;
+    To_All = 2;
+  }
+  int64 to = 1;
+  toType type = 2;
+  bytes dataJson = 4;
+  bytes dataProto = 5;
+
+}
+
+message SendMsgDataReply{
+  enum codeType{
+    Code_None = 0;
+    Success = 200;
+  }
+  codeType code = 1;
+}
+
+
+
+service Gate {
+    rpc SendMsg(SendMsgData) returns (SendMsgDataReply);   // 发送message给连接
+}
