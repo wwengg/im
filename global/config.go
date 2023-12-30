@@ -10,8 +10,6 @@ import (
 	"reflect"
 )
 
-var CONFIG *Config
-
 type Config struct {
 	sconfig.Config `yaml:",inline" mapstructure:",squash"`
 

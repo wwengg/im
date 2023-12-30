@@ -21,4 +21,6 @@ message empty{}
 
 service Logic {
   rpc GateToLogic(GateTologicMsg) returns (empty);  // Oneshot 不用等服务返回值
+  rpc ConnectionBegin(GateTologicMsg) returns (empty);  // Oneshot 不用等服务返回值
+  rpc ConnectionLost(GateTologicMsg) returns (empty);  // Oneshot 不用等服务返回值
 }

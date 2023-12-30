@@ -19,7 +19,7 @@ var _ = server.NewServer
 var _ = client.NewClient
 var _ = protocol.NewMessage
 
-// ================== interface skeleton ===================
+//================== interface skeleton ===================
 type GateAble interface {
 	// GateAble can be used for interface verification.
 
@@ -27,7 +27,7 @@ type GateAble interface {
 	SendMsg(ctx context.Context, args *SendMsgData, reply *SendMsgDataReply) (err error)
 }
 
-// ================== server skeleton ===================
+//================== server skeleton ===================
 type GateImpl struct{}
 
 // ServeForGate starts a server only registers one service.

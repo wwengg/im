@@ -18,7 +18,7 @@ import (
 
 var _ = srpc.TODO
 
-func initRpcxService(serverName string, rpc sconfig.RPC, rpcService sconfig.RpcService) {
+func InitRpcxService(serverName string, rpc sconfig.RPC, rpcService sconfig.RpcService) {
 	info := model.ServerInfo{
 		Name:       serverName,
 		Ip:         global.CONFIG.RpcService.ServiceAddr,
@@ -41,5 +41,5 @@ func initRpcxService(serverName string, rpc sconfig.RPC, rpcService sconfig.RpcS
 	// 执行上次程序退出未处理完的数据
 
 	// go 协程启动rpc服务 开始接客
-	go global.LOG.Error(s.Serve("tcp", fmt.Sprintf("%s:%s", global.CONFIG.RpcService.ServiceAddr, global.CONFIG.RpcService.Port)).Error())
+	global.LOG.Error(s.Serve("tcp", fmt.Sprintf("%s:%s", global.CONFIG.RpcService.ServiceAddr, global.CONFIG.RpcService.Port)).Error())
 }

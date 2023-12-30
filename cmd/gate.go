@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/wwengg/im/initialize"
-
 	"github.com/spf13/cobra"
+	"github.com/wwengg/im/global"
+	"github.com/wwengg/im/internal/gate"
 )
 
 // gateCmd represents the gate command
@@ -22,11 +22,15 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("gate called")
-		initialize.InitSlog()
+		global.InitSlog()
 
-		initialize.InitSRPC()
+		global.InitSRPC()
 
-		initialize.InitDB()
+		global.InitDB()
+		
+		gate.InitGateTcp()
+
+		gate.InitRpcxService("GateRPCX", global.CONFIG.RPC, global.CONFIG.RpcService)
 
 	},
 }

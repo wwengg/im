@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/wwengg/im/global"
-	"github.com/wwengg/im/initialize"
 	"github.com/wwengg/im/internal/httpgate"
 	"github.com/wwengg/simple/server"
 )
@@ -23,11 +22,11 @@ var httpCmd = &cobra.Command{
 		fmt.Println("http called")
 		//initHttpPort()
 
-		initialize.InitSlog()
+		global.InitSlog()
 
-		initialize.InitSRPC()
+		global.InitSRPC()
 
-		initialize.InitDB()
+		global.InitDB()
 
 		httpgate.InitGinHttpGate()
 		srv := server.NewGateway(&global.CONFIG.Gateway, httpgate.GinEngine)
