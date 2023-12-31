@@ -5,6 +5,12 @@ package cmd
 
 import (
 	"fmt"
+<<<<<<< HEAD
+=======
+	"github.com/wwengg/im/global"
+	"github.com/wwengg/im/internal/gate"
+
+>>>>>>> dev
 	"github.com/spf13/cobra"
 	"github.com/wwengg/im/global"
 	"github.com/wwengg/im/internal/gate"
@@ -14,23 +20,27 @@ import (
 var gateCmd = &cobra.Command{
 	Use:   "gate",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("gate called")
 		global.InitSlog()
 
 		global.InitSRPC()
+<<<<<<< HEAD
 
 		global.InitDB()
 		
 		gate.InitGateTcp()
 
 		gate.InitRpcxService("GateRPCX", global.CONFIG.RPC, global.CONFIG.RpcService)
+=======
+
+		global.InitDB()
+
+		gate.InitRpcxService(global.CONFIG.Zinx.Name, global.CONFIG.RPC, global.CONFIG.RpcService)
+
+		gate.InitGateTcp()
+>>>>>>> dev
 
 	},
 }
