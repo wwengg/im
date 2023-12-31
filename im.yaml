@@ -51,7 +51,6 @@ zinx:
   worker-mode: Bind
   max-msg-chan-len: 50
   io-read-buff-size: 1024
-  mode:
   router-slices-mode: true
   log-dir: ./zinxlog
   log-file: zinx.log
@@ -62,6 +61,8 @@ zinx:
   heartbeatMax: 30
   cert-file:
   private-key-file:
+  mode:
+
 
 
 

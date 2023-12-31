@@ -18,12 +18,12 @@ import (
 
 var _ = srpc.TODO
 
-func initRpcxService(serverName string, rpc sconfig.RPC, rpcService sconfig.RpcService) {
+func InitRpcxService(serverName string, rpc sconfig.RPC, rpcService sconfig.RpcService) {
 	info := model.ServerInfo{
 		Name:       serverName,
 		Ip:         global.CONFIG.RpcService.ServiceAddr,
 		Port:       global.CONFIG.RpcService.Port,
-		ServerType: model.ServerType_GateTcp,
+		ServerType: model.ServerType_RPCX_service,
 	}
 	if err := model.ServerInit(&info); err != nil {
 		global.LOG.Errorf("model.ServerInit err = %s", err.Error())
