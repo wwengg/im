@@ -5,12 +5,6 @@ package cmd
 
 import (
 	"fmt"
-<<<<<<< HEAD
-=======
-	"github.com/wwengg/im/global"
-	"github.com/wwengg/im/internal/gate"
-
->>>>>>> dev
 	"github.com/spf13/cobra"
 	"github.com/wwengg/im/global"
 	"github.com/wwengg/im/internal/gate"
@@ -26,21 +20,12 @@ var gateCmd = &cobra.Command{
 		global.InitSlog()
 
 		global.InitSRPC()
-<<<<<<< HEAD
 
 		global.InitDB()
-		
+
 		gate.InitGateTcp()
-
-		gate.InitRpcxService("GateRPCX", global.CONFIG.RPC, global.CONFIG.RpcService)
-=======
-
-		global.InitDB()
 
 		gate.InitRpcxService(global.CONFIG.Zinx.Name, global.CONFIG.RPC, global.CONFIG.RpcService)
-
-		gate.InitGateTcp()
->>>>>>> dev
 
 	},
 }
