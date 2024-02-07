@@ -4,6 +4,8 @@
 // @Update  Wangwengang  2023/12/23 14:01
 package logic
 
-func ServeForLogic() {
+import "github.com/wwengg/im/internal/logic/core"
 
+func ServeForLogic() {
+	core.InitGlobalMgr()
 }

@@ -1,13 +1,13 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/wwengg/im/global"
+	"github.com/wwengg/im/internal/logic"
 )
 
 // logicCmd represents the logic command
@@ -22,6 +22,19 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("logic called")
+		global.InitSlog()
+
+		global.InitSRPC()
+
+		global.InitEtcdV3()
+
+		global.InitDB()
+
+		global.InitRedisBase()
+
+		logic.ServeForLogic()
+
+		logic.InitRpcxService("Logic", global.CONFIG.RPC, global.CONFIG.RpcService)
 	},
 }
 

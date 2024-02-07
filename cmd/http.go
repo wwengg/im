@@ -28,8 +28,8 @@ var httpCmd = &cobra.Command{
 
 		global.InitDB()
 
-		httpgate.InitGinHttpGate()
-		srv := server.NewGateway(&global.CONFIG.Gateway, httpgate.GinEngine)
+		ginEngine := httpgate.InitGinHttpGate()
+		srv := server.NewGateway(&global.CONFIG.Gateway, ginEngine)
 
 		srv.Start()
 

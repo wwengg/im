@@ -11,9 +11,7 @@ import (
 	"github.com/wwengg/simple/core/snet/http"
 )
 
-var GinEngine *http.GinEngine
-
-func InitGinHttpGate() {
+func InitGinHttpGate() *http.GinEngine {
 	// 初始化gin
 	GinEngine := http.NewGinEngine(&global.CONFIG.Gateway)
 
@@ -28,4 +26,5 @@ func InitGinHttpGate() {
 	{
 		router.InitSRPCRouter(privateGroup)
 	}
+	return GinEngine
 }

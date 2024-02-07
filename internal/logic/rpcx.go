@@ -1,19 +1,16 @@
 // @Title
 // @Description
-// @Author  Wangwengang  2023/12/22 18:53
-// @Update  Wangwengang  2023/12/22 18:53
-package gate
+// @Author  Wangwengang  2024/2/5 17:04
+// @Update  Wangwengang  2024/2/5 17:04
+package logic
 
 import (
-	"fmt"
 	"github.com/smallnest/rpcx/server"
 	"github.com/wwengg/im/global"
-	"github.com/wwengg/im/internal/gate/core"
-	"github.com/wwengg/im/internal/gate/service"
+	"github.com/wwengg/im/internal/logic/service"
 	"github.com/wwengg/im/model"
 	"github.com/wwengg/simple/core/sconfig"
-	srpc "github.com/wwengg/simple/core/srpc"
-	"go.uber.org/zap"
+	"github.com/wwengg/simple/core/srpc"
 	"os"
 )
 
@@ -37,13 +34,11 @@ func InitRpcxService(serverName string, rpc sconfig.RPC, rpcService sconfig.RpcS
 	// 服务注册中心
 	srpc.AddRegistryPlugin(s, rpc, rpcService)
 
-	s.RegisterName(fmt.Sprintf("Gate%d", core.GlobalMgr.ServerId), new(service.Gate), "")
-	s.RegisterName(fmt.Sprintf("Gate", core.GlobalMgr.ServerId), new(service.Gate), "") // 广播消息时使用
+	s.RegisterName("Logic", new(service.LogicService), "")
 	// 执行上次程序退出未处理完的数据
 
 	// go 协程启动rpc服务 开始接客
-	addr := fmt.Sprintf("%s:%s", global.CONFIG.RpcService.ServiceAddr, global.CONFIG.RpcService.Port)
-	global.LOG.Info("rpcx", zap.Any("rpcservice", global.CONFIG.RpcService), zap.String("addr", addr))
-
-	global.LOG.Error(s.Serve("tcp", addr).Error())
+	//addr := fmt.Sprintf("%s:%s", global.CONFIG.RpcService.Port)
+	//global.LOG.Info("rpcx", zap.Any("rpcservice", global.CONFIG.RpcService), zap.String("addr", addr))
+	global.LOG.Error(s.Serve("tcp", "127.0.0.1:9002").Error())
 }

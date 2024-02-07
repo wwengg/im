@@ -1,0 +1,41 @@
+/*
+Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+*/
+syntax = "proto3";
+
+package pbcmdService;
+
+option go_package = "github.com/wwengg/im/proto/pbcmdService";
+
+import "pbcommon/pbcommon.proto";
+
+
+message CmdServiceModel{
+  int64 id = 1;
+  string createdAt = 2;
+  string updatedAt = 3;
+  int64 cmd = 4;
+  string servicePath = 5;
+  string serviceName = 6;
+
+}
+
+message FindCmdServiceArgs{
+  pbcommon.PageInfo pageInfo = 1;
+  CmdServiceModel query = 2;
+}
+
+message FindCmdServiceReplay{
+  pbcommon.ErrCode code = 1;
+  string msg = 2;
+  CmdServiceModel data =3;
+  repeated CmdServiceModel list = 4;
+}
+
+service CmdService {
+  rpc CreateCmdService(CmdServiceModel) returns(pbcommon.CommonResult){}
+  rpc UpdateCmdService(CmdServiceModel) returns(pbcommon.CommonResult){}
+  rpc DeleteCmdService(pbcommon.IdArgs) returns(pbcommon.CommonResult){}
+  rpc FindCmdServiceById(pbcommon.IdArgs) returns(FindCmdServiceReplay){}
+  rpc FindCmdServiceList(FindCmdServiceArgs) returns(FindCmdServiceReplay){}
+}

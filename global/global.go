@@ -5,15 +5,17 @@ import (
 	"github.com/wwengg/simple/core/slog"
 	"github.com/wwengg/simple/core/srpc"
 	"github.com/wwengg/simple/core/store"
+	clientv3 "go.etcd.io/etcd/client/v3"
 	"gorm.io/gorm"
 )
 
 var (
-	CONFIG *Config
-	LOG    slog.Slog
-	SRPC   srpc.SRPC
-	DBList map[string]*gorm.DB
-	DBUpms *gorm.DB
+	CONFIG    *Config
+	LOG       slog.Slog
+	SRPC      srpc.SRPC
+	DBList    map[string]*gorm.DB
+	ClientV3  *clientv3.Client
+	RedisBase *store.RedisBase
 )
 
 func InitSlog() {
@@ -30,10 +32,24 @@ func InitDB() {
 	// 初始化DBList
 	DBList = store.DBList(&CONFIG.DBList)
 
-	DBUpms = DBList["upms"]
+	model.DBUpms = DBList["upms"]
 
-	// 创建初始化upms的数据库表
-	DBUpms.AutoMigrate(
-		model.ServerInfo{},
-	)
+	model.DBUpms.AutoMigrate(model.CmdService{})
+}
+
+func InitEtcdV3() {
+	cfg := clientv3.Config{
+		Endpoints: CONFIG.RPC.RegisterAddr,
+	}
+	c, err := clientv3.New(cfg)
+	if err != nil {
+		LOG.Errorf("clientv3.New err = %s", err.Error())
+		panic(err)
+		return
+	}
+	ClientV3 = c
+}
+
+func InitRedisBase() {
+	RedisBase = store.NewCache(CONFIG.Redis)
 }

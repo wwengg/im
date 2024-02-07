@@ -4,6 +4,17 @@ package logic;
 
 option go_package = "./logic";
 
+enum LogicCmd {
+  None = 0;
+  EnterRoom = 1; // 进入房间
+  ExitRoom = 2;  // 离开房间
+  Talk = 3;  // 发言
+
+
+  Login = 1001; // 登录
+  UnLogin = 1002; // 退出登录
+}
+
 message GateTologicMsg {
   enum serializeType{
     None = 0;
@@ -14,6 +25,42 @@ message GateTologicMsg {
   int64 serverId = 2;  // gate服务id
   serializeType serialize = 3;
   bytes data = 4;  // rawData
+}
+
+message LogicData {
+  LogicCmd cmd = 1;
+  bytes data = 2;
+}
+
+// EnterRoomData  LogicCmd = EnterRoom = 1;
+message EnterRoomData {
+  int64 rID = 1;
+  enum roomType{
+    None = 0;
+    Public = 1;  // 公共房
+    PwdRoom = 2;  // 密码房
+  }
+  int64 rType = 2;
+  string pwd = 3;
+}
+
+// ExitRoomData LogicCmd = ExitRoom =  2;
+message ExitRoomData {
+  int64 rID = 1;
+}
+
+// TalkData LogicCmd = Talk = 3;
+message TalkData {
+  int64 to = 1;
+  enum toType {
+    None = 0;
+    Conn = 1;
+    All = 2;
+    User = 3;
+    Room = 4;
+  }
+  toType tType = 2;
+  bytes data = 3;  // json
 }
 
 message empty{}

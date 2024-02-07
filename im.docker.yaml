@@ -23,13 +23,13 @@ rpc-service:
 rpc:
   register-type: etcdv3
   register-addr:
-    - 192.168.66.233:23791
-    - 192.168.66.233:23792
-    - 192.168.66.233:23793
-  base-path: local
+    - 127.0.0.1:23791
+    - 127.0.0.1:23792
+    - 127.0.0.1:23793
+  base-path: prod
 
 redis:
-  addr: 192.168.66.233:6379
+  addr: 127.0.0.1:6379
   password:
   db: 0
 
@@ -37,7 +37,7 @@ db-list:
   - disabled: true # 是否启用
     type: mysql # 数据库的类型,目前支持mysql、pgsql
     alias-name: upms # 数据库的名称,注意: alias-name 需要在db-list中唯一
-    path: 192.168.66.233
+    path: 127.0.0.1
     port: 3306
     config: charset=utf8mb4&parseTime=True&loc=Local
     db-name: upms
@@ -50,9 +50,9 @@ db-list:
 
 zinx:
   host: 127.0.0.1
-  tcp-port: 67890
-  ws-port: 8989
-  kcp-port: 67892
+  tcp-port: 56789
+  ws-port: 56788
+  kcp-port: 56787
   name: gate
   max-packet-size: 4096
   max-conn: 2000

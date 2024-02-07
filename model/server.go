@@ -6,13 +6,14 @@ package model
 
 import (
 	"errors"
-	"github.com/wwengg/im/global"
 	"github.com/wwengg/simple/core/store"
 	"github.com/wwengg/simple/proto/pbbase"
 	"gorm.io/gorm"
 )
 
 type ServerType int32
+
+var DBUpms *gorm.DB
 
 const (
 	ServerType_GateHttp ServerType = iota + 1
@@ -35,22 +36,22 @@ func (model *ServerInfo) Proto() *ServerInfo {
 }
 
 func CreateServerInfo(serverInfo *ServerInfo) error {
-	return global.DBUpms.Create(&serverInfo).Error
+	return DBUpms.Create(&serverInfo).Error
 }
 
 func DeleteServerInfo(id int64) error {
 	serverInfo := ServerInfo{
 		BASE_MODEL: store.BASE_MODEL{ID: id},
 	}
-	return global.DBUpms.Delete(&serverInfo).Error
+	return DBUpms.Delete(&serverInfo).Error
 }
 
 func UpdateServerInfo(serverInfo *ServerInfo) error {
-	return global.DBUpms.Save(&serverInfo).Error
+	return DBUpms.Save(&serverInfo).Error
 }
 
 func GetServerInfoById(id int64) (serverInfo ServerInfo, err error) {
-	if err = global.DBUpms.Where("id = ?", id).First(&serverInfo).Error; err == nil {
+	if err = DBUpms.Where("id = ?", id).First(&serverInfo).Error; err == nil {
 		return
 	} else {
 
@@ -61,7 +62,7 @@ func GetServerInfoById(id int64) (serverInfo ServerInfo, err error) {
 func GetServerInfoList(info pbbase.PageInfo) (list []ServerInfo, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	db := global.DBUpms.Model(&ServerInfo{})
+	db := DBUpms.Model(&ServerInfo{})
 	var ServerInfoList []ServerInfo
 	// 此处增加查询条件
 	//if info.Keyword != "" {
@@ -76,10 +77,9 @@ func GetServerInfoList(info pbbase.PageInfo) (list []ServerInfo, total int64, er
 	return ServerInfoList, total, err
 }
 func GetServerInfoByIpAndPortAndServerType(info *ServerInfo) error {
-	if err := global.DBUpms.Where("port = ?", info.Port).Where("ip = ?", info.Ip).Where("server_type = ?", info.ServerType).First(&info).Error; err == nil {
+	if err := DBUpms.Where("port = ?", info.Port).Where("ip = ?", info.Ip).Where("server_type = ?", info.ServerType).First(&info).Error; err == nil {
 		return nil
 	} else {
-		global.LOG.Infof("GetServerInfoByIpAndPortAndServerType err = %s", err.Error())
 		return err
 	}
 }

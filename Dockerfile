@@ -7,11 +7,11 @@ ENV GOPROXY=https://goproxy.cn
 WORKDIR /go/src/server
 COPY . .
 
-RUN cat ./im.yaml
+RUN cat ./im.docker.yaml
 
 RUN go mod tidy
 
-RUN go env && go build -o main ./main.go
+RUN go env && go build -o im ./main.go
 
 
 FROM alpine:latest
@@ -26,5 +26,5 @@ RUN apk add --no-cache  gettext tzdata   && \
     apk del tzdata
 
 WORKDIR /go/src/server
-COPY --from=0 /go/src/server/main ./
-COPY --from=0 /go/src/server/im.yaml ./im.yaml
+COPY --from=0 /go/src/server/im ./
+COPY --from=0 /go/src/server/im.docker.yaml ./im.yaml

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package pbcommon;
+
+option go_package = "github.com/wwengg/im/proto/pbcommon";
+
+enum ErrCode {
+  ErrCodeNone = 0;
+  ErrCodeSuccess = 200; // 操作成功
+
+  ErrCodeFindError = 1001; // 查询失败
+  ErrCodeCreateError = 1002; // 创建失败
+  ErrCodeDeleteError = 1003; // 删除失败
+  ErrCodeUpdateError = 1004; // 更新失败
+}
+
+message CommonResult{
+  ErrCode code = 1;
+  string msg = 2;
+
+
+
+}
+
+message IdArgs {
+  int64 id = 1;
+  string idStr = 2;
+  repeated int64 ids = 3;
+  repeated string idStrs = 4;
+}
+
+message PageInfo{
+  int32 page = 1;
+  int32 pageSize = 2;
+}

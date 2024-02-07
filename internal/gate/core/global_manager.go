@@ -7,7 +7,9 @@ package core
 import (
 	"github.com/aceld/zinx/ziface"
 	"github.com/aceld/zinx/zutils"
+	"github.com/smallnest/rpcx/protocol"
 	"github.com/wwengg/im/global"
+	"github.com/wwengg/im/proto/logic"
 	"os"
 )
 
@@ -52,13 +54,33 @@ func (g *GlobalManager) ConnectionEnterFirst(conn ziface.IConnection) {
 		g.nt.SetNotifyID(uint64(nextId), conn)
 	}
 
-	// 写入redis hash桶
+	msg := logic.GateTologicMsg{
+		From:     nextId,
+		ServerId: GlobalMgr.ServerId,
+	}
+	data, _ := msg.Marshal()
+	_, _, err := global.SRPC.RPC("Logic", "ConnectionBegin", data, protocol.ProtoBuffer, true)
+	if err != nil {
+		//如果logic服务不可用，将返回err
+		global.LOG.Errorf("ConnectionEnterFirst Logic ConnectionBegin RPC err = %s", err.Error())
+		conn.Stop()
+	}
 
 }
 
 func (g *GlobalManager) ConnectionLost(conn ziface.IConnection) {
 	if v, err := conn.GetProperty("uniqueId"); err == nil {
 		g.nt.DelNotifyByID(uint64(v.(int64)))
+		msg := logic.GateTologicMsg{
+			From:     v.(int64),
+			ServerId: GlobalMgr.ServerId,
+		}
+		data, _ := msg.Marshal()
+		_, _, err := global.SRPC.RPC("Logic", "ConnectionLost", data, protocol.ProtoBuffer, true)
+		if err != nil {
+			//如果logic服务不可用，将返回err
+			global.LOG.Errorf("JsonHandle RPC err = %s", err.Error())
+		}
 	}
 
 	// hash桶中删除数据
