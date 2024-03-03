@@ -1,0 +1,45 @@
+/*
+Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+*/
+syntax = "proto3";
+
+package pbuser;
+
+option go_package = "github.com/wwengg/im/proto/pbuser";
+
+import "pbcommon/pbcommon.proto";
+
+
+message UserModel{
+  int64 id = 1;
+  string createdAt = 2;
+  string updatedAt = 3;
+
+  string username = 4;
+  int32 phone = 5;
+  string password = 6;
+  string head = 7;
+  string ip = 8;
+  string lastLogin = 9;
+  string address = 10;
+}
+
+message FindUserArgs{
+  pbcommon.PageInfo pageInfo = 1;
+  UserModel query = 2;
+}
+
+message FindUserReplay{
+  pbcommon.ErrCode code = 1;
+  string msg = 2;
+  UserModel data =3;
+  repeated UserModel list = 4;
+}
+
+service User {
+  rpc CreateUser(UserModel) returns(pbcommon.CommonResult){}
+  rpc UpdateUser(UserModel) returns(pbcommon.CommonResult){}
+  rpc DeleteUser(pbcommon.IdArgs) returns(pbcommon.CommonResult){}
+  rpc FindUserById(pbcommon.IdArgs) returns(FindUserReplay){}
+  rpc FindUserList(FindUserArgs) returns(FindUserReplay){}
+}

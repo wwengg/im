@@ -9,6 +9,7 @@ require (
 	github.com/smallnest/rpcx v1.8.21
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
+	go.etcd.io/etcd/client/v3 v3.5.10
 	go.uber.org/zap v1.21.0
 	gorm.io/gorm v1.25.5
 )
@@ -95,7 +96,6 @@ require (
 	go.etcd.io/etcd/api/v3 v3.5.10 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.10 // indirect
 	go.etcd.io/etcd/client/v2 v2.305.10 // indirect
-	go.etcd.io/etcd/client/v3 v3.5.10 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/mod v0.12.0 // indirect

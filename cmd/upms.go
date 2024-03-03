@@ -1,11 +1,12 @@
 /*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 */
 package cmd
 
 import (
 	"fmt"
+	"github.com/wwengg/im/global"
+	"github.com/wwengg/im/internal/upms"
 
 	"github.com/spf13/cobra"
 )
@@ -22,6 +23,18 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("upms called")
+		global.InitSlog()
+
+		global.InitSRPC()
+
+		global.InitEtcdV3()
+
+		global.InitDB()
+
+		global.InitRedisBase()
+
+		upms.ServeForUpms()
+
 	},
 }
 

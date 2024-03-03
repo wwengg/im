@@ -1,17 +1,13 @@
-// @Title
-// @Description
-// @Author  Wangwengang  2024/2/5 17:04
-// @Update  Wangwengang  2024/2/5 17:04
-package logic
+package upms
 
 import (
 	"fmt"
 	"github.com/smallnest/rpcx/server"
 	"github.com/wwengg/im/global"
-	"github.com/wwengg/im/internal/logic/service"
 	"github.com/wwengg/im/model"
 	"github.com/wwengg/simple/core/sconfig"
 	"github.com/wwengg/simple/core/srpc"
+	"go.uber.org/zap"
 	"os"
 )
 
@@ -35,11 +31,11 @@ func InitRpcxService(serverName string, rpc sconfig.RPC, rpcService sconfig.RpcS
 	// 服务注册中心
 	srpc.AddRegistryPlugin(s, rpc, rpcService)
 
-	s.RegisterName("Logic", new(service.LogicService), "")
+	//s.RegisterName("Logic", new(service.LogicService), "")
 	// 执行上次程序退出未处理完的数据
 
 	// go 协程启动rpc服务 开始接客
 	addr := fmt.Sprintf("%s:%s", global.CONFIG.RpcService.ServiceAddr, global.CONFIG.RpcService.Port)
-	//global.LOG.Info("rpcx", zap.Any("rpcservice", global.CONFIG.RpcService), zap.String("addr", addr))
+	global.LOG.Info("rpcx", zap.Any("rpcxservice", global.CONFIG.RpcService), zap.String("addr", addr))
 	global.LOG.Error(s.Serve("tcp", addr).Error())
 }
