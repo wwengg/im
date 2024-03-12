@@ -50,9 +50,9 @@ db-list:
 
 zinx:
   host: 127.0.0.1
-  tcp-port: 67890
+  tcp-port: 65530
   ws-port: 8989
-  kcp-port: 67892
+  kcp-port: 65531
   name: gate
   max-packet-size: 4096
   max-conn: 2000
