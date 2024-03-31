@@ -27,7 +27,7 @@ type ServerInfo struct {
 	store.BASE_MODEL
 	Name       string     `json:"name" form:"name" gorm:"column:name;comment:服务名称;type:varchar(20);size:20;"`
 	Ip         string     `json:"ip" form:"ip" gorm:"column:ip;comment:服务名称;type:varchar(20);size:20;"`
-	Port       string     `json:"port" form:"prot" gorm:"column:port;comment:端口号;type:varchar(8);size:8"`
+	Port       string     `json:"port" form:"port" gorm:"column:port;comment:端口号;type:varchar(8);size:8"`
 	ServerType ServerType `json:"serverType" form:"serverType" gorm:"column:server_type;comment:服务类型;type:smallint(6);size:6;"`
 }
 
