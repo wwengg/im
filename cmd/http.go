@@ -31,6 +31,8 @@ var httpCmd = &cobra.Command{
 		ginEngine := httpgate.InitGinHttpGate()
 		srv := server.NewGateway(&global.CONFIG.Gateway, ginEngine)
 
+		global.LOG.Infof("http server listen port:%d", global.CONFIG.Gateway.Addr)
+
 		srv.Start()
 
 	},
