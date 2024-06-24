@@ -6,6 +6,7 @@ option go_package = "github.com/wwengg/im/proto/pbcommon";
 
 enum ErrCode {
   ErrCodeNone = 0;
+  ErrCodeServerError = 1;
   ErrCodeSuccess = 200; // 操作成功
 
   ErrCodeFindError = 1001; // 查询失败

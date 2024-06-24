@@ -5,7 +5,7 @@ package httpgate;
 option go_package = "./httpgate";
 
 
-message Request{
+message HttpRequest{
   string token = 1;
   string v = 2;
   string sign = 3;
@@ -14,8 +14,9 @@ message Request{
   bytes data = 6;
 }
 
-message Response{
+message HttpResponse{
   int32 code =1;
   string msg = 2;
   bytes data = 3;
+  string newToken = 4;  // token剩余过期时间低于设定的值，将返回刷新后的token
 }
