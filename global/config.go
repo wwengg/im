@@ -23,8 +23,8 @@ func (c *Config) Show() {
 
 	fmt.Println("===== IM Global Config =====")
 	for i := 0; i < objVal.NumField(); i++ {
-		objVal2 := reflect.ValueOf(objVal.Field(i).Interface()).Elem()
-		objType2 := reflect.TypeOf(objVal.Field(i).Interface())
+		objVal2 := reflect.ValueOf(objVal.Field(i)).Elem()
+		objType2 := reflect.TypeOf(objVal.Field(i))
 
 		for a := 0; a < objVal2.NumField(); a++ {
 			field2 := objVal2.Field(a)
