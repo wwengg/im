@@ -34,7 +34,7 @@ func InitDB() {
 
 	model.DBUpms = DBList["upms"]
 
-	model.DBUpms.AutoMigrate(model.CmdService{})
+	model.DBUpms.AutoMigrate(model.CmdService{}, model.ServerInfo{})
 }
 
 func InitEtcdV3() {

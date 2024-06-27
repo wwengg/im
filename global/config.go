@@ -6,8 +6,9 @@ package global
 
 import (
 	"fmt"
-	"github.com/wwengg/simple/core/sconfig"
 	"reflect"
+
+	"github.com/wwengg/simple/core/sconfig"
 )
 
 type Config struct {
@@ -22,6 +23,14 @@ func (c *Config) Show() {
 
 	fmt.Println("===== IM Global Config =====")
 	for i := 0; i < objVal.NumField(); i++ {
+		objVal2 := reflect.ValueOf(objVal.Field(i).Interface()).Elem()
+		objType2 := reflect.TypeOf(objVal.Field(i).Interface())
+
+		for a := 0; a < objVal2.NumField(); a++ {
+			field2 := objVal2.Field(a)
+			typeField2 := objType2.Field(a)
+			fmt.Printf("%s: %v\n", typeField2.Name, field2.Interface())
+		}
 		field := objVal.Field(i)
 		typeField := objType.Field(i)
 
