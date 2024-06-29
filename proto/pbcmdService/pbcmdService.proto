@@ -26,7 +26,7 @@ message FindCmdServiceArgs{
 }
 
 message FindCmdServiceReplay{
-  pbcommon.ErrCode code = 1;
+  pbcommon.EnumCode code = 1;
   string msg = 2;
   CmdServiceModel data =3;
   repeated CmdServiceModel list = 4;

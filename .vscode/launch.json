@@ -1,16 +1,32 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Launch Package",
-            "type": "go",
-            "request": "launch",
-            "mode": "auto",
-            "program": "${workspaceFolder}/main.go",
-            "args": ["gate"]
-        }
-    ]
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "gate",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go", // 执行程序，这里是项目默认的根目录，可以指定文件执行，如"${workspaceFolder}\\cmd\\app.go"
+      "args": ["gate"] // 程序启动参数 如 ["-env" , 'prod']
+    },
+    {
+      "name": "http",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go", // 执行程序，这里是项目默认的根目录，可以指定文件执行，如"${workspaceFolder}\\cmd\\app.go"
+      "args": ["http"] // 程序启动参数 如 ["-env" , 'prod']
+    },
+    {
+      "name": "logic",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/main.go", // 执行程序，这里是项目默认的根目录，可以指定文件执行，如"${workspaceFolder}\\cmd\\app.go"
+      "args": ["logic -c ./logic.yaml"] // 程序启动参数 如 ["-env" , 'prod']
+    }
+  ]
 }

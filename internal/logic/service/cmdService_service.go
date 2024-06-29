@@ -81,13 +81,12 @@ func (s *CmdService) FindCmdServiceById(ctx context.Context, args *pbcommon.IdAr
 func (s *CmdService) FindCmdServiceByCmd(ctx context.Context, args *pbcommon.IdArgs, reply *pbcmdService.FindCmdServiceReplay) (err error) {
 	if cmdService,err := s.getCmdService(int32(args.Id));err == nil{
 		reply.Data = cmdService.Proto()
-		reply.Code = pbcommon.ErrCode_ErrCodeSuccess
+		reply.Code = pbcommon.EnumCode_Success
 		return nil
 	}else{
-		reply.Code = pbcommon.ErrCode_ErrCodeFindError
+		reply.Code = pbcommon.EnumCode_FindError
 		return nil
 	}
-	return nil
 }
 
 // FindCmdServiceList is server rpc method as defined
