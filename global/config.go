@@ -24,20 +24,7 @@ func (c *Config) Show() {
 	fmt.Println("===== IM Global Config =====")
 	// fmt.Printf("%+v\n", *c)
 	show(reflect.ValueOf(c).Elem(), reflect.TypeOf(*c))
-	// for i := 0; i < objVal.NumField(); i++ {
-	// 	field := objVal.Field(i)
-	// 	typeField := objType.Field(i)
 
-	// 	fmt.Printf("%s: %v\n", typeField.Name, field.Interface())
-	// 	// objVal2 := field
-	// 	// objType2 := field.Type()
-
-	// 	// for a := 0; a < objVal2.NumField(); a++ {
-	// 	// 	field2 := objVal2.Field(a)
-	// 	// 	typeField2 := objType2.Field(a)
-	// 	// 	fmt.Printf("%s: %v\n", typeField2.Name, field2.Interface())
-	// 	// }
-	// }
 	fmt.Println("==============================")
 }
 
@@ -65,8 +52,5 @@ func show(objVal reflect.Value, objType reflect.Type) {
 			fmt.Println("==============================")
 			fmt.Println("\n")
 		}
-		// if field.NumField() > 1 {
-		// 	show(field, field.Type())
-		// }
 	}
 }
