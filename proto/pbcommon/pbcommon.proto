@@ -36,3 +36,7 @@ message PageInfo{
   int32 page = 1;
   int32 pageSize = 2;
 }
+
+message commonList {
+  PageInfo pageInfo = 1;
+}

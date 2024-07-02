@@ -6,6 +6,7 @@ package httpgate
 import (
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
+	pbcommon "github.com/wwengg/im/proto/pbcommon"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -22,7 +23,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type Request struct {
+type HttpRequest struct {
 	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	V                    string   `protobuf:"bytes,2,opt,name=v,proto3" json:"v,omitempty"`
 	Sign                 string   `protobuf:"bytes,3,opt,name=sign,proto3" json:"sign,omitempty"`
@@ -34,18 +35,18 @@ type Request struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Request) Reset()         { *m = Request{} }
-func (m *Request) String() string { return proto.CompactTextString(m) }
-func (*Request) ProtoMessage()    {}
-func (*Request) Descriptor() ([]byte, []int) {
+func (m *HttpRequest) Reset()         { *m = HttpRequest{} }
+func (m *HttpRequest) String() string { return proto.CompactTextString(m) }
+func (*HttpRequest) ProtoMessage()    {}
+func (*HttpRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_6c7eb5b75cd767ec, []int{0}
 }
-func (m *Request) XXX_Unmarshal(b []byte) error {
+func (m *HttpRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *HttpRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Request.Marshal(b, m, deterministic)
+		return xxx_messageInfo_HttpRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,81 +56,82 @@ func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Request) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Request.Merge(m, src)
+func (m *HttpRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HttpRequest.Merge(m, src)
 }
-func (m *Request) XXX_Size() int {
+func (m *HttpRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *Request) XXX_DiscardUnknown() {
-	xxx_messageInfo_Request.DiscardUnknown(m)
+func (m *HttpRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_HttpRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Request proto.InternalMessageInfo
+var xxx_messageInfo_HttpRequest proto.InternalMessageInfo
 
-func (m *Request) GetToken() string {
+func (m *HttpRequest) GetToken() string {
 	if m != nil {
 		return m.Token
 	}
 	return ""
 }
 
-func (m *Request) GetV() string {
+func (m *HttpRequest) GetV() string {
 	if m != nil {
 		return m.V
 	}
 	return ""
 }
 
-func (m *Request) GetSign() string {
+func (m *HttpRequest) GetSign() string {
 	if m != nil {
 		return m.Sign
 	}
 	return ""
 }
 
-func (m *Request) GetSignMethod() string {
+func (m *HttpRequest) GetSignMethod() string {
 	if m != nil {
 		return m.SignMethod
 	}
 	return ""
 }
 
-func (m *Request) GetTimeStamp() string {
+func (m *HttpRequest) GetTimeStamp() string {
 	if m != nil {
 		return m.TimeStamp
 	}
 	return ""
 }
 
-func (m *Request) GetData() []byte {
+func (m *HttpRequest) GetData() []byte {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
-type Response struct {
-	Code                 int32    `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
-	Msg                  string   `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
-	Data                 []byte   `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type HttpResponse struct {
+	Code                 pbcommon.EnumCode `protobuf:"varint,1,opt,name=code,proto3,enum=pbcommon.EnumCode" json:"code,omitempty"`
+	Msg                  string            `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	Data                 []byte            `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	NewToken             string            `protobuf:"bytes,4,opt,name=newToken,proto3" json:"newToken,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
-func (m *Response) Reset()         { *m = Response{} }
-func (m *Response) String() string { return proto.CompactTextString(m) }
-func (*Response) ProtoMessage()    {}
-func (*Response) Descriptor() ([]byte, []int) {
+func (m *HttpResponse) Reset()         { *m = HttpResponse{} }
+func (m *HttpResponse) String() string { return proto.CompactTextString(m) }
+func (*HttpResponse) ProtoMessage()    {}
+func (*HttpResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_6c7eb5b75cd767ec, []int{1}
 }
-func (m *Response) XXX_Unmarshal(b []byte) error {
+func (m *HttpResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Response) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *HttpResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Response.Marshal(b, m, deterministic)
+		return xxx_messageInfo_HttpResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -139,65 +141,76 @@ func (m *Response) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Response) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Response.Merge(m, src)
+func (m *HttpResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HttpResponse.Merge(m, src)
 }
-func (m *Response) XXX_Size() int {
+func (m *HttpResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *Response) XXX_DiscardUnknown() {
-	xxx_messageInfo_Response.DiscardUnknown(m)
+func (m *HttpResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_HttpResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Response proto.InternalMessageInfo
+var xxx_messageInfo_HttpResponse proto.InternalMessageInfo
 
-func (m *Response) GetCode() int32 {
+func (m *HttpResponse) GetCode() pbcommon.EnumCode {
 	if m != nil {
 		return m.Code
 	}
-	return 0
+	return pbcommon.EnumCode_None
 }
 
-func (m *Response) GetMsg() string {
+func (m *HttpResponse) GetMsg() string {
 	if m != nil {
 		return m.Msg
 	}
 	return ""
 }
 
-func (m *Response) GetData() []byte {
+func (m *HttpResponse) GetData() []byte {
 	if m != nil {
 		return m.Data
 	}
 	return nil
 }
 
+func (m *HttpResponse) GetNewToken() string {
+	if m != nil {
+		return m.NewToken
+	}
+	return ""
+}
+
 func init() {
-	proto.RegisterType((*Request)(nil), "httpgate.Request")
-	proto.RegisterType((*Response)(nil), "httpgate.Response")
+	proto.RegisterType((*HttpRequest)(nil), "httpgate.HttpRequest")
+	proto.RegisterType((*HttpResponse)(nil), "httpgate.HttpResponse")
 }
 
 func init() { proto.RegisterFile("httpgate/httpgate.proto", fileDescriptor_6c7eb5b75cd767ec) }
 
 var fileDescriptor_6c7eb5b75cd767ec = []byte{
-	// 217 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x90, 0xb1, 0x4e, 0xc3, 0x40,
-	0x0c, 0x86, 0x65, 0xd2, 0x94, 0xd6, 0xea, 0x80, 0x2c, 0x24, 0x6e, 0x40, 0xa7, 0xaa, 0x53, 0xa7,
-	0x32, 0xf0, 0x06, 0x88, 0x95, 0xe5, 0xd8, 0xd8, 0x0e, 0x62, 0xa5, 0x11, 0x4a, 0xee, 0xe0, 0x4c,
-	0x5e, 0x84, 0x97, 0x62, 0xe4, 0x11, 0x50, 0x9e, 0x04, 0x9d, 0x21, 0x49, 0x27, 0x7f, 0xfe, 0x7e,
-	0xe9, 0x97, 0x65, 0xbc, 0x3a, 0x8a, 0xc4, 0xda, 0x0b, 0xdf, 0x8c, 0x70, 0x88, 0xef, 0x41, 0x02,
-	0xad, 0xc6, 0x7d, 0xf7, 0x09, 0x78, 0xee, 0xf8, 0xed, 0x83, 0x93, 0xd0, 0x25, 0x96, 0x12, 0x5e,
-	0xb9, 0x33, 0xb0, 0x85, 0xfd, 0xda, 0xfd, 0x2d, 0xb4, 0x41, 0xe8, 0xcd, 0x99, 0x1a, 0xe8, 0x89,
-	0x70, 0x91, 0x9a, 0xba, 0x33, 0x85, 0x0a, 0x65, 0xb2, 0x88, 0x79, 0x3e, 0xb0, 0x1c, 0x43, 0x65,
-	0x16, 0x9a, 0x9c, 0x18, 0xba, 0xc6, 0xb5, 0x34, 0x2d, 0x3f, 0x8a, 0x6f, 0xa3, 0x29, 0x35, 0x9e,
-	0x45, 0x6e, 0xac, 0xbc, 0x78, 0xb3, 0xdc, 0xc2, 0x7e, 0xe3, 0x94, 0x77, 0xf7, 0xb8, 0x72, 0x9c,
-	0x62, 0xe8, 0x12, 0xe7, 0xfc, 0x25, 0x54, 0xac, 0x47, 0x95, 0x4e, 0x99, 0x2e, 0xb0, 0x68, 0x53,
-	0xfd, 0x7f, 0x55, 0xc6, 0xa9, 0xa5, 0x98, 0x5b, 0xee, 0xcc, 0xd7, 0x60, 0xe1, 0x7b, 0xb0, 0xf0,
-	0x33, 0x58, 0x78, 0xc2, 0xc3, 0xf4, 0x85, 0xe7, 0xa5, 0xbe, 0xe1, 0xf6, 0x37, 0x00, 0x00, 0xff,
-	0xff, 0xa4, 0xc0, 0x93, 0x14, 0x21, 0x01, 0x00, 0x00,
+	// 277 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x90, 0xcd, 0x4a, 0xc3, 0x40,
+	0x14, 0x85, 0x19, 0x93, 0x96, 0xf6, 0x1a, 0x44, 0x06, 0xa1, 0x43, 0x91, 0x50, 0x2a, 0x48, 0x57,
+	0x09, 0xea, 0x1b, 0x28, 0x82, 0x1b, 0x37, 0xd1, 0x95, 0xbb, 0xfc, 0x0c, 0x93, 0x20, 0xf3, 0xa3,
+	0xb9, 0x69, 0x7c, 0x13, 0x5f, 0xc9, 0xa5, 0x8f, 0x20, 0x79, 0x12, 0xc9, 0x8d, 0x49, 0x5d, 0xcd,
+	0x77, 0xce, 0x1d, 0x0e, 0xe7, 0x5e, 0x58, 0x95, 0x88, 0x4e, 0xa5, 0x28, 0xe3, 0x11, 0x22, 0xf7,
+	0x6e, 0xd1, 0xf2, 0xc5, 0xa8, 0xd7, 0x2b, 0x97, 0xe5, 0x56, 0x6b, 0x6b, 0xe2, 0x11, 0x86, 0x2f,
+	0xdb, 0x4f, 0x06, 0xc7, 0x0f, 0x88, 0x2e, 0x91, 0x6f, 0x8d, 0xac, 0x91, 0x9f, 0xc1, 0x0c, 0xed,
+	0xab, 0x34, 0x82, 0x6d, 0xd8, 0x6e, 0x99, 0x0c, 0x82, 0x07, 0xc0, 0xf6, 0xe2, 0x88, 0x1c, 0xb6,
+	0xe7, 0x1c, 0xfc, 0xba, 0x52, 0x46, 0x78, 0x64, 0x10, 0xf3, 0x10, 0xa0, 0x7f, 0x1f, 0x25, 0x96,
+	0xb6, 0x10, 0x3e, 0x4d, 0xfe, 0x39, 0xfc, 0x1c, 0x96, 0x58, 0x69, 0xf9, 0x84, 0xa9, 0x76, 0x62,
+	0x46, 0xe3, 0x83, 0xd1, 0x27, 0x16, 0x29, 0xa6, 0x62, 0xbe, 0x61, 0xbb, 0x20, 0x21, 0xde, 0x7e,
+	0x40, 0x30, 0x14, 0xab, 0x9d, 0x35, 0xb5, 0xe4, 0x97, 0xe0, 0xe7, 0xb6, 0x90, 0x54, 0xec, 0xe4,
+	0x9a, 0x47, 0xd3, 0x22, 0xf7, 0xa6, 0xd1, 0x77, 0xb6, 0x90, 0x09, 0xcd, 0xf9, 0x29, 0x78, 0xba,
+	0x56, 0x7f, 0x6d, 0x7b, 0x9c, 0xd2, 0xbd, 0x43, 0x3a, 0x5f, 0xc3, 0xc2, 0xc8, 0xf6, 0x99, 0x56,
+	0x1d, 0xda, 0x4e, 0xfa, 0xf6, 0xea, 0xab, 0x0b, 0xd9, 0x77, 0x17, 0xb2, 0x9f, 0x2e, 0x64, 0x2f,
+	0x17, 0xaa, 0xc2, 0xb2, 0xc9, 0xa2, 0xdc, 0xea, 0xb8, 0x6d, 0xa5, 0x51, 0x2a, 0xae, 0x74, 0x4c,
+	0xd7, 0x9b, 0xee, 0x9d, 0xcd, 0x49, 0xdf, 0xfc, 0x06, 0x00, 0x00, 0xff, 0xff, 0x58, 0x20, 0x24,
+	0x04, 0x8b, 0x01, 0x00, 0x00,
 }
 
-func (m *Request) Marshal() (dAtA []byte, err error) {
+func (m *HttpRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -207,12 +220,12 @@ func (m *Request) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Request) MarshalTo(dAtA []byte) (int, error) {
+func (m *HttpRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Request) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *HttpRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -266,7 +279,7 @@ func (m *Request) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Response) Marshal() (dAtA []byte, err error) {
+func (m *HttpResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -276,12 +289,12 @@ func (m *Response) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Response) MarshalTo(dAtA []byte) (int, error) {
+func (m *HttpResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Response) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *HttpResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -289,6 +302,13 @@ func (m *Response) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.NewToken) > 0 {
+		i -= len(m.NewToken)
+		copy(dAtA[i:], m.NewToken)
+		i = encodeVarintHttpgate(dAtA, i, uint64(len(m.NewToken)))
+		i--
+		dAtA[i] = 0x22
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
@@ -323,7 +343,7 @@ func encodeVarintHttpgate(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *Request) Size() (n int) {
+func (m *HttpRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -359,7 +379,7 @@ func (m *Request) Size() (n int) {
 	return n
 }
 
-func (m *Response) Size() (n int) {
+func (m *HttpResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -376,6 +396,10 @@ func (m *Response) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovHttpgate(uint64(l))
 	}
+	l = len(m.NewToken)
+	if l > 0 {
+		n += 1 + l + sovHttpgate(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -388,7 +412,7 @@ func sovHttpgate(x uint64) (n int) {
 func sozHttpgate(x uint64) (n int) {
 	return sovHttpgate(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *Request) Unmarshal(dAtA []byte) error {
+func (m *HttpRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -411,10 +435,10 @@ func (m *Request) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Request: wiretype end group for non-group")
+			return fmt.Errorf("proto: HttpRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Request: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: HttpRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -617,10 +641,7 @@ func (m *Request) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHttpgate
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHttpgate
 			}
 			if (iNdEx + skippy) > l {
@@ -636,7 +657,7 @@ func (m *Request) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Response) Unmarshal(dAtA []byte) error {
+func (m *HttpResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -659,10 +680,10 @@ func (m *Response) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Response: wiretype end group for non-group")
+			return fmt.Errorf("proto: HttpResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Response: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: HttpResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -679,7 +700,7 @@ func (m *Response) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Code |= int32(b&0x7F) << shift
+				m.Code |= pbcommon.EnumCode(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -750,16 +771,45 @@ func (m *Response) Unmarshal(dAtA []byte) error {
 				m.Data = []byte{}
 			}
 			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NewToken", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowHttpgate
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthHttpgate
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHttpgate
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.NewToken = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipHttpgate(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHttpgate
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHttpgate
 			}
 			if (iNdEx + skippy) > l {

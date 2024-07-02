@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package httpgate;
 
-option go_package = "./httpgate";
+option go_package = "github.com/wwengg/im/proto/httpgate";
+
+import "pbcommon/pbcommon.proto";
 
 
 message HttpRequest{
@@ -15,7 +17,7 @@ message HttpRequest{
 }
 
 message HttpResponse{
-  int32 code =1;
+  pbcommon.EnumCode code = 1;
   string msg = 2;
   bytes data = 3;
   string newToken = 4;  // token剩余过期时间低于设定的值，将返回刷新后的token

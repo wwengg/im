@@ -65,3 +65,18 @@ CRC 算法 数据
   ]
 }
 ```
+
+
+```
+func (x *HttpRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_httpgate_httpgate_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+```
