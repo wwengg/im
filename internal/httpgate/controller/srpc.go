@@ -53,7 +53,7 @@ func Http2RpcxPost(c *gin.Context) {
 			if err != nil {
 				global.LOG.Error(err.Error())
 			}
-			global.LOG.Infof("DeviceReport payload: %v", payload)
+			global.LOG.Infof("DeviceReport payload: %s", string(payload))
 			meta, resp, err = global.SRPC.RPCJson(servicePath, serviceMethod, payload)
 		} else {
 			requestJson := request.RequestJson{}
