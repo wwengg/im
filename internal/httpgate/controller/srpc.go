@@ -47,18 +47,28 @@ func Http2RpcxPost(c *gin.Context) {
 	meta := make(map[string]string, 0)
 	var resp []byte
 	if isJson {
-		requestJson := request.RequestJson{}
-		//将前端json格式数据与LoginForm对象绑定
-		err := c.BindJSON(&requestJson)
-		if err != nil {
-			response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
-			return
-		}
-		if bytes, err := json.Marshal(requestJson.Data); err == nil {
-			meta, resp, err = global.SRPC.RPCJson(servicePath, serviceMethod, bytes)
+		if servicePath == "DeviceReport" {
+			payload, err := io.ReadAll(c.Request.Body)
+			defer c.Request.Body.Close()
+			if err != nil {
+				global.LOG.Error(err.Error())
+			}
+			global.LOG.Infof("DeviceReport payload: %v", payload)
+			meta, resp, err = global.SRPC.RPCJson(servicePath, serviceMethod, payload)
 		} else {
-			response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
-			return
+			requestJson := request.RequestJson{}
+			//将前端json格式数据与LoginForm对象绑定
+			err := c.BindJSON(&requestJson)
+			if err != nil {
+				response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
+				return
+			}
+			if bytes, err := json.Marshal(requestJson.Data); err == nil {
+				meta, resp, err = global.SRPC.RPCJson(servicePath, serviceMethod, bytes)
+			} else {
+				response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
+				return
+			}
 		}
 	} else if isProtobuf {
 		payload, err := io.ReadAll(c.Request.Body)
@@ -76,7 +86,7 @@ func Http2RpcxPost(c *gin.Context) {
 		global.LOG.Info("SendRaw", zap.String("servicePath", servicePath), zap.String("serviceMethod", serviceMethod), zap.Any("requestProto", requestProto))
 		meta, resp, err = global.SRPC.RPCProtobuf(servicePath, serviceMethod, requestProto.Data)
 	}
-	global.LOG.Info("请求结束", zap.Any("meta", meta), zap.Any("resp", resp), zap.Error(err))
+	global.LOG.Info("请求结束", zap.Any("meta", meta), zap.Any("resp", resp), zap.Any("err", err))
 	if err != nil {
 		global.LOG.Debug("code != 0", zap.String("code", err.Error()))
 		if err == client.ErrXClientNoServer {
