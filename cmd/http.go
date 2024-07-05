@@ -36,7 +36,7 @@ var httpCmd = &cobra.Command{
 
 		global.LOG.Infof("http server listen port:%d", global.CONFIG.Gateway.Addr)
 
-		t, closer, err := plugin.NewTracer("im", global.CONFIG.Jaeger.Agent)
+		t, closer, err := plugin.NewTracer("httpgate", global.CONFIG.Jaeger.Agent)
 		if err == nil {
 			defer closer.Close()
 			opentracing.SetGlobalTracer(t)

@@ -408,8 +408,8 @@ github.com/vmihailenco/msgpack/v5 v5.3.5 h1:5gO0H1iULLWGhs2H5tbAHIZTV8/cYafcFOr9
 github.com/vmihailenco/msgpack/v5 v5.3.5/go.mod h1:7xyJ9e+0+9SaZT0Wt1RGleJXzli6Q/V5KbhBonMG9jc=
 github.com/vmihailenco/tagparser/v2 v2.0.0 h1:y09buUbR+b5aycVFQs/g70pqKVZNBmxwAhO7/IwNM9g=
 github.com/vmihailenco/tagparser/v2 v2.0.0/go.mod h1:Wri+At7QHww0WTrCBeu4J6bNtoV6mEfg5OIWRZA9qds=
-github.com/wwengg/simple v0.0.12-0.20240705043927-00b2c496d248 h1:KjlGmTqE3isvyfmGjOlbZ5K8nGIcDuW3gVJ4ca0Xhdc=
-github.com/wwengg/simple v0.0.12-0.20240705043927-00b2c496d248/go.mod h1:OrKVXvEDUsm8ZdCBmQR0X6tHsMAPc1dhxNOJHhSw+s4=
+github.com/wwengg/simple v0.0.12-0.20240705070242-e674ebbef316 h1:o4a4ekjaqTZPoicy/jWgCPWvBOHgFbsN/pVj0s87BMU=
+github.com/wwengg/simple v0.0.12-0.20240705070242-e674ebbef316/go.mod h1:OrKVXvEDUsm8ZdCBmQR0X6tHsMAPc1dhxNOJHhSw+s4=
 github.com/xtaci/kcp-go v5.4.20+incompatible h1:TN1uey3Raw0sTz0Fg8GkfM0uH3YwzhnZWQ1bABv5xAg=
 github.com/xtaci/kcp-go v5.4.20+incompatible/go.mod h1:bN6vIwHQbfHaHtFpEssmWsN45a+AZwO7eyRCmEIbtvE=
 github.com/xtaci/lossyconn v0.0.0-20200209145036-adba10fffc37 h1:EWU6Pktpas0n8lLQwDsRyZfmkPeRbdgPtW609es+/9E=

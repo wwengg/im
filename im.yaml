@@ -74,7 +74,8 @@ zinx:
   private-key-file:
   mode:
 
-
+jaeger:
+  agent: 192.168.66.233:6831
 
 
 

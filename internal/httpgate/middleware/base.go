@@ -8,17 +8,15 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/wwengg/simple/core/plugin"
-
 	"github.com/gin-gonic/gin"
 )
 
 // // CasbinHandler 拦截器
 func BaseHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if span, _, err := plugin.GenerateSpanWithContext(c, "baseHandler"); err == nil {
-			defer span.Finish()
-		}
+		// if span, _, err := plugin.GenerateSpanWithContext(c, "BaseHandler"); err == nil {
+		// 	defer span.Finish()
+		// }
 		method := c.Request.Method
 		origin := c.Request.Header.Get("Origin")
 		c.Header("Access-Control-Allow-Origin", origin)
