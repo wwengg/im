@@ -6,6 +6,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -17,6 +18,7 @@ import (
 	"github.com/wwengg/im/internal/httpgate/model/response"
 	"github.com/wwengg/im/proto/httpgate"
 	"github.com/wwengg/im/proto/pbcommon"
+	"github.com/wwengg/simple/core/plugin"
 	"go.uber.org/zap"
 )
 
@@ -32,17 +34,24 @@ func Http2RpcxPost(c *gin.Context) {
 
 	if servicePath == "" {
 		global.LOG.Error("empty servicepath")
+		response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
+		return
 	}
 
 	serviceMethod := c.Param("serviceMethod")
 	if serviceMethod == "" {
 		global.LOG.Error("empty servicemethod")
+		response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
+		return
 	}
 
 	// 首字母小写转大写
 	servicePath = strings.ToUpper(servicePath[:1]) + servicePath[1:]
 	serviceMethod = strings.ToUpper(serviceMethod[:1]) + serviceMethod[1:]
 	global.LOG.Info("请求开始", zap.Any("servicePath", servicePath), zap.Any("serviceMethod", serviceMethod))
+	if span, _, err := plugin.GenerateSpanWithContext(c, fmt.Sprintf("Http2RpcxPost:%s.%s", servicePath, serviceMethod)); err == nil {
+		defer span.Finish()
+	}
 	var err error
 	meta := make(map[string]string, 0)
 	var resp []byte
@@ -54,7 +63,7 @@ func Http2RpcxPost(c *gin.Context) {
 				global.LOG.Error(err.Error())
 			}
 			global.LOG.Infof("DeviceReport payload: %s", string(payload))
-			meta, resp, err = global.SRPC.RPCJson(servicePath, serviceMethod, payload)
+			meta, resp, err = global.SRPC.RPCJson(c, servicePath, serviceMethod, payload)
 		} else {
 			requestJson := request.RequestJson{}
 			//将前端json格式数据与LoginForm对象绑定
@@ -64,7 +73,7 @@ func Http2RpcxPost(c *gin.Context) {
 				return
 			}
 			if bytes, err := json.Marshal(requestJson.Data); err == nil {
-				meta, resp, err = global.SRPC.RPCJson(servicePath, serviceMethod, bytes)
+				meta, resp, err = global.SRPC.RPCJson(c, servicePath, serviceMethod, bytes)
 			} else {
 				response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
 				return
@@ -84,7 +93,7 @@ func Http2RpcxPost(c *gin.Context) {
 			return
 		}
 		global.LOG.Info("SendRaw", zap.String("servicePath", servicePath), zap.String("serviceMethod", serviceMethod), zap.Any("requestProto", requestProto))
-		meta, resp, err = global.SRPC.RPCProtobuf(servicePath, serviceMethod, requestProto.Data)
+		meta, resp, err = global.SRPC.RPCProtobuf(c, servicePath, serviceMethod, requestProto.Data)
 	}
 	global.LOG.Info("请求结束", zap.Any("meta", meta), zap.Any("resp", resp), zap.Any("err", err))
 	if err != nil {

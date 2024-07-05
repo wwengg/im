@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/gogo/protobuf/proto"
 	"github.com/smallnest/rpcx/protocol"
 	"github.com/wwengg/im/global"
@@ -45,7 +46,7 @@ func (s *LogicService) GateToLogic(ctx context.Context, args *logic.GateTologicM
 		serialize = protocol.ProtoBuffer
 	}
 	if cmdService, err := GlobalCmdService.getCmdService(int32(data.Cmd)); err == nil {
-		_, _, err := global.SRPC.RPC(cmdService.ServicePath, cmdService.ServiceName, data.Data, serialize, true)
+		_, _, err := global.SRPC.RPC(ctx, cmdService.ServicePath, cmdService.ServiceName, data.Data, serialize, true)
 		if err != nil {
 			global.LOG.Error("GateToLogic RPC error", zap.Error(err))
 		}

@@ -8,6 +8,7 @@ require (
 	github.com/aceld/zinx v1.2.2
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gogo/protobuf v1.3.2
+	github.com/opentracing/opentracing-go v1.2.0
 	github.com/smallnest/rpcx v1.8.32-0.20240610151439-c0ed6ea0955e
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
@@ -90,6 +91,8 @@ require (
 	github.com/tinylib/msgp v1.1.9 // indirect
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
+	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
@@ -127,7 +130,7 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/wwengg/simple v0.0.11-0.20240702134147-afab02b7f1ef
+	github.com/wwengg/simple v0.0.12-0.20240705043927-00b2c496d248
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 // indirect

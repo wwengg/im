@@ -5,6 +5,8 @@
 package controller
 
 import (
+	"context"
+
 	"github.com/aceld/zinx/ziface"
 	"github.com/smallnest/rpcx/protocol"
 	"github.com/wwengg/im/global"
@@ -29,7 +31,7 @@ func JsonHandle(request ziface.IRequest) {
 
 		data, _ := gateTologicMsg.Marshal()
 
-		_, _, err := global.SRPC.RPC(servivePath, serviceMethod, data, protocol.ProtoBuffer, true)
+		_, _, err := global.SRPC.RPC(context.Background(), servivePath, serviceMethod, data, protocol.ProtoBuffer, true)
 		if err != nil {
 			//如果logic服务不可用，将返回err
 			global.LOG.Errorf("JsonHandle RPC err = %s", err.Error())
@@ -49,7 +51,7 @@ func ProtobufHandle(request ziface.IRequest) {
 
 		data, _ := gateTologicMsg.Marshal()
 
-		_, _, err := global.SRPC.RPC(servivePath, serviceMethod, data, protocol.ProtoBuffer, true)
+		_, _, err := global.SRPC.RPC(context.Background(), servivePath, serviceMethod, data, protocol.ProtoBuffer, true)
 		if err != nil {
 			//如果logic服务不可用，将返回err
 			global.LOG.Errorf("JsonHandle RPC err = %s", err.Error())

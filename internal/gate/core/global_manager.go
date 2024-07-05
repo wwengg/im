@@ -5,12 +5,14 @@
 package core
 
 import (
+	"context"
+	"os"
+
 	"github.com/aceld/zinx/ziface"
 	"github.com/aceld/zinx/zutils"
 	"github.com/smallnest/rpcx/protocol"
 	"github.com/wwengg/im/global"
 	"github.com/wwengg/im/proto/logic"
-	"os"
 )
 
 type GlobalManager struct {
@@ -59,7 +61,7 @@ func (g *GlobalManager) ConnectionEnterFirst(conn ziface.IConnection) {
 		ServerId: GlobalMgr.ServerId,
 	}
 	data, _ := msg.Marshal()
-	_, _, err := global.SRPC.RPC("Logic", "ConnectionBegin", data, protocol.ProtoBuffer, true)
+	_, _, err := global.SRPC.RPC(context.Background(), "Logic", "ConnectionBegin", data, protocol.ProtoBuffer, true)
 	if err != nil {
 		//如果logic服务不可用，将返回err
 		global.LOG.Errorf("ConnectionEnterFirst Logic ConnectionBegin RPC err = %s", err.Error())
@@ -76,7 +78,7 @@ func (g *GlobalManager) ConnectionLost(conn ziface.IConnection) {
 			ServerId: GlobalMgr.ServerId,
 		}
 		data, _ := msg.Marshal()
-		_, _, err := global.SRPC.RPC("Logic", "ConnectionLost", data, protocol.ProtoBuffer, true)
+		_, _, err := global.SRPC.RPC(context.Background(), "Logic", "ConnectionLost", data, protocol.ProtoBuffer, true)
 		if err != nil {
 			//如果logic服务不可用，将返回err
 			global.LOG.Errorf("JsonHandle RPC err = %s", err.Error())

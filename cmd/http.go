@@ -5,9 +5,12 @@ package cmd
 
 import (
 	"fmt"
+
+	"github.com/opentracing/opentracing-go"
 	"github.com/spf13/cobra"
 	"github.com/wwengg/im/global"
 	"github.com/wwengg/im/internal/httpgate"
+	"github.com/wwengg/simple/core/plugin"
 	"github.com/wwengg/simple/server"
 )
 
@@ -33,6 +36,11 @@ var httpCmd = &cobra.Command{
 
 		global.LOG.Infof("http server listen port:%d", global.CONFIG.Gateway.Addr)
 
+		t, closer, err := plugin.NewTracer("im", global.CONFIG.Jaeger.Agent)
+		if err == nil {
+			defer closer.Close()
+			opentracing.SetGlobalTracer(t)
+		}
 		srv.Start()
 
 	},
