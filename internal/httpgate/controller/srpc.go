@@ -25,10 +25,6 @@ func Http2RpcxPost(c *gin.Context) {
 	if md2, isExist := c.Get("JaegerMd"); isExist {
 		md = md2.(map[string]string)
 	}
-	if span, md, err := plugin.GenerateSpanWithMap(md, "V1Handler"); err == nil {
-		c.Set("JaegerMd", md)
-		defer span.Finish()
-	}
 
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, share.ReqMetaDataKey, md)
