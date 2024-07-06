@@ -6,108 +6,69 @@ package controller
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
 	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/smallnest/rpcx/client"
+	"github.com/smallnest/rpcx/protocol"
+	"github.com/smallnest/rpcx/share"
 	"github.com/wwengg/im/global"
-	"github.com/wwengg/im/internal/httpgate/model/request"
 	"github.com/wwengg/im/internal/httpgate/model/response"
-	"github.com/wwengg/im/proto/httpgate"
 	"github.com/wwengg/im/proto/pbcommon"
 	"github.com/wwengg/simple/core/plugin"
 	"go.uber.org/zap"
 )
 
 func Http2RpcxPost(c *gin.Context) {
-	var isJson, isProtobuf bool
-	if a, exist := c.Get("isJson"); exist {
-		isJson = a.(bool)
+	var md map[string]string
+	if md2, isExist := c.Get("JaegerMd"); isExist {
+		md = md2.(map[string]string)
 	}
-	if a, exist := c.Get("isProtobuf"); exist {
-		isProtobuf = a.(bool)
-	}
-	servicePath := c.Param("servicePath")
-
-	if servicePath == "" {
-		global.LOG.Error("empty servicepath")
-		response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
-		return
-	}
-
-	serviceMethod := c.Param("serviceMethod")
-	if serviceMethod == "" {
-		global.LOG.Error("empty servicemethod")
-		response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
-		return
+	if span, md, err := plugin.GenerateSpanWithMap(md, "V1Handler"); err == nil {
+		c.Set("JaegerMd", md)
+		defer span.Finish()
 	}
 
 	ctx := context.Background()
-	// 首字母小写转大写
-	servicePath = strings.ToUpper(servicePath[:1]) + servicePath[1:]
-	serviceMethod = strings.ToUpper(serviceMethod[:1]) + serviceMethod[1:]
-	global.LOG.Info("请求开始", zap.Any("servicePath", servicePath), zap.Any("serviceMethod", serviceMethod))
-	if span, ctx2, err := plugin.GenerateSpanWithContext(ctx, fmt.Sprintf("Http2RpcxPost:%s.%s", servicePath, serviceMethod)); err == nil {
+	ctx = context.WithValue(ctx, share.ReqMetaDataKey, md)
+	if span, ctx2, err := plugin.GenerateSpanWithContext(ctx, fmt.Sprintf("Http2RpcxPost")); err == nil {
 		ctx = ctx2
 		defer span.Finish()
 	}
-	var err error
-	meta := make(map[string]string, 0)
-	var resp []byte
-	if isJson {
-		if servicePath == "DeviceReport" {
-			payload, err := io.ReadAll(c.Request.Body)
-			defer c.Request.Body.Close()
-			if err != nil {
-				global.LOG.Error(err.Error())
-			}
-			global.LOG.Infof("DeviceReport payload: %s", string(payload))
-			meta, resp, err = global.SRPC.RPCJson(ctx, servicePath, serviceMethod, payload)
-		} else {
-			requestJson := request.RequestJson{}
-			//将前端json格式数据与LoginForm对象绑定
-			err := c.BindJSON(&requestJson)
-			if err != nil {
-				response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
-				return
-			}
-			if bytes, err := json.Marshal(requestJson.Data); err == nil {
-				meta, resp, err = global.SRPC.RPCJson(ctx, servicePath, serviceMethod, bytes)
-			} else {
-				response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
-				return
-			}
-		}
-	} else if isProtobuf {
-		payload, err := io.ReadAll(c.Request.Body)
-		defer c.Request.Body.Close()
-		if err != nil {
-			global.LOG.Error(err.Error())
-		}
-		var requestProto httpgate.HttpRequest
 
-		if err = requestProto.Unmarshal(payload); err != nil {
-			global.LOG.Error(err.Error())
-			response.GatewayResult(pbcommon.EnumCode_Invalid, "非法参数", c)
-			return
-		}
-		global.LOG.Info("SendRaw", zap.String("servicePath", servicePath), zap.String("serviceMethod", serviceMethod), zap.Any("requestProto", requestProto))
-		meta, resp, err = global.SRPC.RPCProtobuf(ctx, servicePath, serviceMethod, requestProto.Data)
+	servicePath, isExist := c.Get("servicePath")
+	if !isExist {
+		global.LOG.Error("Get servicePath error")
+		response.GatewayResult(pbcommon.EnumCode_Internal, "Internal Error", c)
+		return
 	}
-	global.LOG.Info("请求结束", zap.Any("meta", meta), zap.Any("resp", resp), zap.Any("err", err))
+
+	xc, err := global.SRPC.GetXClient(servicePath.(string))
+	if err != nil {
+		global.LOG.Errorf("GetXClient error: %v", err)
+		response.GatewayResult(pbcommon.EnumCode_Internal, "Internal Error", c)
+		return
+	}
+
+	req, isExist := c.Get("rpcxMessage")
+	if !isExist {
+		global.LOG.Error("Get rpcxClient error")
+		response.GatewayResult(pbcommon.EnumCode_Internal, "Internal Error", c)
+		return
+	}
+
+	respMeta, resp, err := xc.SendRaw(ctx, req.(*protocol.Message))
+	global.LOG.Info("请求结束", zap.Any("respMeta", respMeta), zap.Any("resp", resp), zap.Any("err", err))
 	if err != nil {
 		global.LOG.Debug("code != 0", zap.String("code", err.Error()))
 		if err == client.ErrXClientNoServer {
-			global.LOG.Errorf("not found any server servername = %s,method = %s", servicePath, serviceMethod)
+			global.LOG.Errorf("not found any server servername = %s", servicePath)
 			response.GatewayResult(pbcommon.EnumCode_Internal, "err", c)
 			return
 		}
 		if code, err := strconv.Atoi(err.Error()); err != nil {
-			response.GatewayResult(pbcommon.EnumCode(code), "error", c)
+			response.GatewayResult(pbcommon.EnumCode(code), "", c)
 			return
 		} else {
 			global.LOG.Errorf("SRPC SendRaw error=%s", err.Error())
@@ -115,9 +76,9 @@ func Http2RpcxPost(c *gin.Context) {
 			return
 		}
 	}
-	if meta["X-RPCX-MessageStatusType"] == "Error" {
-		global.LOG.Errorf("RPCX error = %s", meta["X-RPCX-ErrorMessage"])
-		response.GatewayResult(pbcommon.EnumCode_Internal, meta["X-RPCX-ErrorMessage"], c)
+	if respMeta["X-RPCX-MessageStatusType"] == "Error" {
+		global.LOG.Errorf("RPCX error = %s", respMeta["X-RPCX-ErrorMessage"])
+		response.GatewayResult(pbcommon.EnumCode_Internal, respMeta["X-RPCX-ErrorMessage"], c)
 		return
 	}
 

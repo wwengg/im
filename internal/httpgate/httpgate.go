@@ -18,11 +18,11 @@ func InitGinHttpGate() *http.GinEngine {
 	// 配置路由，中间件
 	publicGroup := GinEngine.GetPublicRouterGroup()
 	privateGroup := GinEngine.GetPrivateRouterGroup()
-	publicGroup.Use(middleware.BaseHandler())
+	publicGroup.Use(middleware.BaseHandler(), middleware.RPCXHandler(), middleware.V1Handler())
 	{
 		router.InitSRPCRouter(publicGroup)
 	}
-	privateGroup.Use(middleware.BaseHandler())
+	privateGroup.Use(middleware.BaseHandler(), middleware.RPCXHandler(), middleware.V2Handler())
 	{
 		router.InitSRPCRouter(privateGroup)
 	}

@@ -6,7 +6,14 @@ option go_package = "github.com/wwengg/im/proto/httpgate";
 
 import "pbcommon/pbcommon.proto";
 
+// v1
+// json && protobuf
+// Request Any
+// Response Any
 
+
+// V2
+// json && protobuf
 message HttpRequest{
   string token = 1;
   string v = 2;
@@ -16,6 +23,8 @@ message HttpRequest{
   bytes data = 6;
 }
 
+// V2
+// json && protobuf
 message HttpResponse{
   pbcommon.EnumCode code = 1;
   string msg = 2;

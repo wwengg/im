@@ -130,7 +130,7 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/wwengg/simple v0.0.12-0.20240705070242-e674ebbef316
+	github.com/wwengg/simple v0.0.12-0.20240706015704-e136f01bda26
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 // indirect
