@@ -7,6 +7,9 @@ option go_package = "github.com/wwengg/im/proto/pbcommon";
 enum EnumCode {
   None = 0;
   Success = 200; // 操作成功
+
+  Forbidden = 403; // 禁止访问
+
   Fail = 500; // 操作失败
   Unknown = 501; // 未知错误
   Internal = 502; // 内部错误

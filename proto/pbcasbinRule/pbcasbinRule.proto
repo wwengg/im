@@ -1,0 +1,23 @@
+/*
+Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+*/
+syntax = "proto3";
+
+package pbcasbinRule;
+
+option go_package = "upms/proto/pbcasbinRule";
+
+
+message CheckCasbinRuleArgs {
+  int64 role = 1;
+  string path = 2;
+  string method = 3;
+}
+
+message CheckCasbinRuleReply {
+  bool ok = 1;
+}
+
+service CasbinRule {
+  rpc CheckCasbinRule(CheckCasbinRuleArgs) returns (CheckCasbinRuleReply){}  // httpgateway => upms
+}
