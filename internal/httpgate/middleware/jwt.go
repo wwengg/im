@@ -30,7 +30,6 @@ func JwtHandler() gin.HandlerFunc {
 		token, isExist := c.Get("tokenData")
 		if !isExist {
 			// 交给Casbin来拦截
-			c.Next()
 			return
 		}
 		appId, isExist := c.Get("appId")
@@ -53,7 +52,6 @@ func JwtHandler() gin.HandlerFunc {
 			if reply.NewToken != "" {
 				c.Header("new-token", reply.NewToken)
 			}
-			c.Next()
 		}
 		global.LOG.Info("JwtHandler:", zap.Any("reply", reply))
 	}
