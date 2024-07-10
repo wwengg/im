@@ -1,10 +1,17 @@
 package middleware
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/gin-gonic/gin"
+	"github.com/smallnest/rpcx/share"
+	"github.com/wwengg/im/global"
 	"github.com/wwengg/im/internal/httpgate/model/response"
+	"github.com/wwengg/im/proto/pbauth"
 	"github.com/wwengg/im/proto/pbcommon"
 	"github.com/wwengg/simple/core/plugin"
+	"go.uber.org/zap"
 )
 
 // c.Get("JaegerMd") && c.Get("tokenData") && c.Get("appId")
@@ -24,6 +31,9 @@ func JwtHandler() gin.HandlerFunc {
 		if !isExist {
 			response.GatewayResult(pbcommon.EnumCode_Internal, "InternalError", c)
 			return
+		} else {
+			// 交给Casbin来拦截
+			c.Next()
 		}
 		appId, isExist := c.Get("appId")
 		if !isExist {
@@ -31,5 +41,21 @@ func JwtHandler() gin.HandlerFunc {
 			return
 		}
 
+		ctx := context.WithValue(context.Background(), share.ReqMetaDataKey, md)
+		args := pbauth.ParseTokenArgs{Token: token.(string)}
+		payload, _ := args.Marshal()
+		_, resp, _ := global.SRPC.RPCProtobuf(ctx, fmt.Sprintf("Auth%d", appId.(int64)), "ParseToken", payload)
+		var reply pbauth.ParseTokenReply
+		_ = reply.Unmarshal(resp)
+		if reply.Code == pbcommon.EnumCode_Success {
+			c.Set("appId", reply.AppId)
+			c.Set("userId", reply.Id)
+			c.Set("roleId", reply.RoleId)
+			if reply.NewToken != "" {
+				c.Header("new-token", reply.NewToken)
+			}
+			c.Next()
+		}
+		global.LOG.Info("JwtHandler:", zap.Any("reply", reply))
 	}
 }

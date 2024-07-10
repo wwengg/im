@@ -12,7 +12,7 @@ import (
 	"github.com/wwengg/simple/core/plugin"
 )
 
-// c.Get("JaegerMd") && c.Get("role")
+// c.Get("JaegerMd") && c.Get("roleId")
 func CasbinHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var md map[string]string
@@ -30,11 +30,11 @@ func CasbinHandler() gin.HandlerFunc {
 		// 获取请求方法
 		method := c.Request.Method
 
-		a, exist := c.Get("role")
+		a, exist := c.Get("roleId")
 		if exist {
 			a = a.(int64)
 		} else {
-			a = int64(0)
+			a = int64(0) // 游客
 		}
 		args := pbcasbinRule.CheckCasbinRuleArgs{
 			Role:   a.(int64),
@@ -50,7 +50,7 @@ func CasbinHandler() gin.HandlerFunc {
 		if reply.Ok {
 			c.Next()
 		} else {
-			response.GatewayResult(pbcommon.EnumCode_Forbidden, "非法参数", c)
+			response.GatewayResult(pbcommon.EnumCode_Forbidden, "", c)
 		}
 		global.LOG.Infof("CasbinHandler path: %s, method: %s", path, method)
 	}
