@@ -48,9 +48,10 @@ func CasbinHandler() gin.HandlerFunc {
 		var reply pbcasbinRule.CheckCasbinRuleReply
 		_ = reply.Unmarshal(resp)
 		if reply.Ok {
-			c.Next()
+			return
 		} else {
 			response.GatewayResult(pbcommon.EnumCode_Forbidden, "权限不足", c)
+			c.Abort()
 		}
 		global.LOG.Infof("CasbinHandler path: %s, method: %s", path, method)
 	}
