@@ -29,15 +29,14 @@ func JwtHandler() gin.HandlerFunc {
 
 		token, isExist := c.Get("tokenData")
 		if !isExist {
-			response.GatewayResult(pbcommon.EnumCode_Internal, "InternalError", c)
-			return
-		} else {
 			// 交给Casbin来拦截
 			c.Next()
+			return
 		}
 		appId, isExist := c.Get("appId")
 		if !isExist {
-			response.GatewayResult(pbcommon.EnumCode_Internal, "InternalError", c)
+			response.GatewayResult(pbcommon.EnumCode_ParamError, "ParamError", c)
+			c.Abort()
 			return
 		}
 

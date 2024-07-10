@@ -50,7 +50,7 @@ func CasbinHandler() gin.HandlerFunc {
 		if reply.Ok {
 			c.Next()
 		} else {
-			response.GatewayResult(pbcommon.EnumCode_Forbidden, "", c)
+			response.GatewayResult(pbcommon.EnumCode_Forbidden, "权限不足", c)
 		}
 		global.LOG.Infof("CasbinHandler path: %s, method: %s", path, method)
 	}
