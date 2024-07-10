@@ -54,6 +54,7 @@ func V1Handler() gin.HandlerFunc {
 		if isJson {
 			global.LOG.Infof("json payload: %s", string(payload))
 		}
+		req.Payload = payload
 		c.Set("rpcxMessage", req)
 	}
 }
